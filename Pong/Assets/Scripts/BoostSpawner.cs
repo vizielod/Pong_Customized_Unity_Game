@@ -23,27 +23,11 @@ public class BoostSpawner : MonoBehaviour
         {
             if (timer > spawnInterval)
             {
-                int random = Random.Range(0, 7); //Boost object pool
+                int random = Random.Range(0, 10); //Boost object pool
                 Vector3 randomSpawnPosition = new Vector3(0, Random.Range(-15f, +15f), 0); //Randomize Spawning position in x=0 y=(-15,15)
 
                 Debug.Log(random);
                 GameObject boost = Instantiate(boosts[random], randomSpawnPosition, Quaternion.identity);
-                /*if (random == 0)
-                {
-                    GameObject boost = Instantiate(boosts[0], randomSpawnPosition, Quaternion.identity);
-                }
-                if (random == 1)
-                {
-                    GameObject boost = Instantiate(boosts[1], randomSpawnPosition, Quaternion.identity);
-                }
-                if (random == 2)
-                {
-                    GameObject boost = Instantiate(boosts[2], randomSpawnPosition, Quaternion.identity);
-                }
-                if (random == 3)
-                {
-                    GameObject boost = Instantiate(boosts[3], randomSpawnPosition, Quaternion.identity);
-                }*/
 
                 timer -= spawnInterval;
             }

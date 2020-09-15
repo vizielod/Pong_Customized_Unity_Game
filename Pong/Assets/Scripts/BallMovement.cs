@@ -6,8 +6,11 @@ public class BallMovement : MonoBehaviour
 {
     public static BallMovement instance;
 
-    public CameraShake cameraShake;
-    public GameObject cameraShakeObject;
+    private AudioSource pongEffect;
+    private AudioSource goalEffect;
+
+    private CameraShake cameraShake;
+    private GameObject cameraShakeObject;
 
     public float speed = 15f;
 
@@ -15,12 +18,17 @@ public class BallMovement : MonoBehaviour
     public int scorePlayer2 = 0;
 
     private Rigidbody2D ball;
+
+    public bool hasStarted;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
         //cameraShakeObject = GameObject.Find("Main Camera");
         cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        pongEffect = GameObject.Find("Audio Source Pong").GetComponent<AudioSource>();
+        goalEffect = GameObject.Find("Audio Source Goal").GetComponent<AudioSource>();
+
         ball = GetComponent<Rigidbody2D>();
         //initial velocity
         //ball.velocity = Vector2.right * speed;
@@ -33,7 +41,6 @@ public class BallMovement : MonoBehaviour
         {
             ball.velocity = Vector2.left * speed;
         }
-        
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class BallMovement : MonoBehaviour
         //   col.gameObject is the racket
         //   col.transform.position is the racket's position
         //   col.collider is the racket's collider
-
+        pongEffect.Play();
         // Hit the left Racket?
         if (col.gameObject.name == "RacketLeft")
         {
@@ -56,10 +63,15 @@ public class BallMovement : MonoBehaviour
             setBallSpeed(speed + 2f);
 
             // Shake the camera
-            StartCoroutine(cameraShake.Shake(.15f, .2f));
+            StartCoroutine(cameraShake.Shake(.30f, .3f));
 
             // Change ball color similar to Racket color
             transform.GetComponent<Renderer>().material.color = Color.green;
+
+            // Change ball trail color - by activating and deactivating the proper Trail
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(2).gameObject.SetActive(false);
 
             // Calculate hit Factor
             float y = hitFactor(transform.position,
@@ -80,10 +92,15 @@ public class BallMovement : MonoBehaviour
             setBallSpeed(speed + 2f);
 
             // Shake the camera
-            StartCoroutine(cameraShake.Shake(.15f, .2f));
+            StartCoroutine(cameraShake.Shake(.30f, .3f));
 
             // Change ball color similar to Racket color
             transform.GetComponent<Renderer>().material.color = Color.red;
+
+            // Change ball trail color - by activating and deactivating the proper Trail
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(false);
 
             // Calculate hit Factor
             float y = hitFactor(transform.position,
@@ -99,8 +116,14 @@ public class BallMovement : MonoBehaviour
 
         if(col.gameObject.tag == "LeftGoal")
         {
+            goalEffect.Play();
+            ball.velocity = Vector2.left * 0;
             // Shake the camera
-            StartCoroutine(cameraShake.Shake(.30f, 1f));
+            StartCoroutine(cameraShake.Shake(4.5f, .5f));
+
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(true);
 
             scorePlayer1++;
             GameManager.instance.Goal_Player1();
@@ -110,16 +133,23 @@ public class BallMovement : MonoBehaviour
                 Destroy(gameObject);
             }
             // If player1 scores the ball starts to move towards Player2 after respawning on the middle if the field
-            setBallSpeed(15f);
+            StartCoroutine(RespawnBallAfterLeftGoal());
+            /*setBallSpeed(15f);
             transform.position = Vector3.zero;
             ball.velocity = Vector2.left * speed;
-            ball.GetComponent<Renderer>().material.color = Color.white;
+            ball.GetComponent<Renderer>().material.color = Color.white;*/
         }
 
         if (col.gameObject.tag == "RightGoal")
         {
+            goalEffect.Play();
+            ball.velocity = Vector2.right * 0;
             // Shake the camera
-            StartCoroutine(cameraShake.Shake(.30f, 1f));
+            StartCoroutine(cameraShake.Shake(4.5f, .5f));
+
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(true);
 
             scorePlayer2++;
             GameManager.instance.Goal_Player2();
@@ -129,11 +159,30 @@ public class BallMovement : MonoBehaviour
                 Destroy(gameObject);
             }
             // If player2 scores the ball starts to move towards Player1 after respawning on the middle if the field
-            setBallSpeed(15f);
+            StartCoroutine(RespawnBallAfterRightGoal());
+            /*setBallSpeed(15f);
             transform.position = Vector3.zero;
             ball.velocity = Vector2.right * speed;
-            ball.GetComponent<Renderer>().material.color = Color.white;
+            ball.GetComponent<Renderer>().material.color = Color.white;*/
         }
+    }
+
+    private IEnumerator RespawnBallAfterRightGoal()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        setBallSpeed(15f);
+        transform.position = Vector3.zero;
+        ball.velocity = Vector2.right * speed;
+        ball.GetComponent<Renderer>().material.color = Color.white;
+    }
+
+    private IEnumerator RespawnBallAfterLeftGoal()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        setBallSpeed(15f);
+        transform.position = Vector3.zero;
+        ball.velocity = Vector2.left * speed;
+        ball.GetComponent<Renderer>().material.color = Color.white;
     }
 
     float hitFactor(Vector2 ballPos, Vector2 racketPos, float racketHeight)

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BoostManager : MonoBehaviour
 {
+    public AudioSource boostAudio;
+    public AudioSource nerfAudio;
+
+    public static BoostManager instance;
 
     public float speed = 15f;
 
@@ -13,19 +17,26 @@ public class BoostManager : MonoBehaviour
     private RacketRightManager racketRightManager;
     private BallMovement ballMovement;
 
+    public bool hasStarted;
+
     //private GameObject ball;
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
         racketLeftManager = RacketLeftManager.instance;
         racketRightManager = RacketRightManager.instance;
 
         ballMovement = BallMovement.instance;
 
+        boostAudio = GameObject.Find("Audio Source Boost").GetComponent<AudioSource>();
+        nerfAudio = GameObject.Find("Audio Source Nerf").GetComponent<AudioSource>();
+
         boost = GetComponent<Rigidbody2D>();
         //initial velocity
-        int random = Random.Range(0, 2)*2-1;
-        if(random == 1)
+        int random = Random.Range(0, 2) * 2 - 1;
+        if (random == 1)
         {
             boost.velocity = Vector2.right * speed;
         }
@@ -33,7 +44,6 @@ public class BoostManager : MonoBehaviour
         {
             boost.velocity = Vector2.left * speed;
         }
-        
     }
 
     // Update is called once per frame
@@ -54,12 +64,18 @@ public class BoostManager : MonoBehaviour
         // Hit the left Racket?
         if (col.gameObject.name == "RacketLeft")
         {
+
             //gameObject.SetActive(false);
             //ballMovement.setBallSpeed(ballMovement.getBallSpeed() * 1.5f);
             //racketManager.setRacketLength(2f);
             if (gameObject.name == "RacketSizeUp(Clone)")
             {
-                if(racketLeftManager.getRacketSizeY() < 6f)
+                //Play boost sound effect
+                boostAudio.Play();
+
+                //set the timer of the boost
+                racketLeftManager.setSizeTimer(15f);
+                if (racketLeftManager.getRacketSizeY() < 6f)
                 {
                     racketLeftManager.setRacketSizeY(racketLeftManager.getRacketSizeY() + 0.5f);
                 }
@@ -67,7 +83,12 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "RacketSizeDown(Clone)")
             {
-                if(racketLeftManager.getRacketSizeY() > 0.5f)
+                //Play boost sound effect
+                nerfAudio.Play();
+
+                //set the timer of the boost
+                racketLeftManager.setSizeTimer(15f);
+                if (racketLeftManager.getRacketSizeY() > 0.5f)
                 {
                     racketLeftManager.setRacketSizeY(racketLeftManager.getRacketSizeY() - 0.5f);
                 }
@@ -75,6 +96,11 @@ public class BoostManager : MonoBehaviour
             }
             else if(gameObject.name == "RacketSpeedUp(Clone)")
             {
+                //Play boost sound effect
+                boostAudio.Play();
+
+                //set the timer of the boost
+                racketLeftManager.setSpeedTimer(15f);
                 if (racketLeftManager.getRacketSpeed() < 60f)
                 {
                     racketLeftManager.setRacketSpeed(racketLeftManager.getRacketSpeed() + 10f);
@@ -82,6 +108,11 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "RacketSpeedDown(Clone)")
             {
+                //Play boost sound effect
+                nerfAudio.Play();
+
+                //set the timer of the boost
+                racketLeftManager.setSpeedTimer(15f);
                 if (racketLeftManager.getRacketSpeed() > 10f)
                 {
                     racketLeftManager.setRacketSpeed(racketLeftManager.getRacketSpeed() - 10f);
@@ -89,16 +120,20 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "SpawnExtraBall(Clone)")
             {
-
+                boostAudio.Play();
                 GameObject ball = Instantiate((GameObject)Resources.Load("Prefabs/Ball", typeof(GameObject)), Vector3.zero, Quaternion.identity);     
                 
             }
             else if (gameObject.name == "BallSpeedIncr(Clone)")
             {
+                //Play boost sound effect
+                boostAudio.Play();
                 ballMovement.setBallSpeed(ballMovement.getBallSpeed() + 10f);
             }
             else if (gameObject.name == "BallSpeedDecr(Clone)")
             {
+                //Play boost sound effect
+                nerfAudio.Play();
                 ballMovement.setBallSpeed(ballMovement.getBallSpeed() - 10f);
             }
             gameObject.SetActive(false);
@@ -112,7 +147,12 @@ public class BoostManager : MonoBehaviour
             //ballMovement.setBallSpeed(ballMovement.getBallSpeed() * 1.5f);
             if (gameObject.name == "RacketSizeUp(Clone)")
             {
-                if(racketRightManager.getRacketSizeY() < 6f)
+                //Play boost sound effect
+                boostAudio.Play();
+
+                //set the timer of the boost
+                racketRightManager.setSizeTimer(15f);
+                if (racketRightManager.getRacketSizeY() < 6f)
                 {
                     racketRightManager.setRacketSizeY(racketRightManager.getRacketSizeY() + 0.5f);
                 }
@@ -120,13 +160,23 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "RacketSizeDown(Clone)")
             {
-                if(racketRightManager.getRacketSizeY() > 0.5f)
+                //Play boost sound effect
+                nerfAudio.Play();
+
+                //set the timer of the boost
+                racketRightManager.setSizeTimer(15f);
+                if (racketRightManager.getRacketSizeY() > 0.9f)
                 {
-                    racketRightManager.setRacketSizeY(racketRightManager.getRacketSizeY() - 0.5f);
+                    racketRightManager.setRacketSizeY(racketRightManager.getRacketSizeY() - 0.3f);
                 }
             }
             else if (gameObject.name == "RacketSpeedUp(Clone)")
             {
+                //Play boost sound effect
+                boostAudio.Play();
+
+                //set the timer of the boost
+                racketRightManager.setSpeedTimer(15f);
                 if (racketRightManager.getRacketSpeed() < 60f)
                 {
                     racketRightManager.setRacketSpeed(racketRightManager.getRacketSpeed() + 10f);
@@ -134,6 +184,11 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "RacketSpeedDown(Clone)")
             {
+                //Play boost sound effect
+                nerfAudio.Play();
+
+                //set the timer of the boost
+                racketRightManager.setSpeedTimer(15f);
                 if (racketRightManager.getRacketSpeed() > 10f)
                 {
                     racketRightManager.setRacketSpeed(racketRightManager.getRacketSpeed() - 10f);
@@ -141,16 +196,21 @@ public class BoostManager : MonoBehaviour
             }
             else if (gameObject.name == "SpawnExtraBall(Clone)")
             {
-
+                //Play boost sound effect
+                boostAudio.Play();
                 GameObject ball = Instantiate((GameObject)Resources.Load("Prefabs/Ball", typeof(GameObject)), Vector3.zero, Quaternion.identity);
 
             }
             else if (gameObject.name == "BallSpeedIncr(Clone)")
             {
+                //Play boost sound effect
+                boostAudio.Play();
                 ballMovement.setBallSpeed(ballMovement.getBallSpeed() + 10f);
             }
             else if (gameObject.name == "BallSpeedDecr(Clone)")
             {
+                //Play boost sound effect
+                nerfAudio.Play();
                 ballMovement.setBallSpeed(ballMovement.getBallSpeed() - 10f);
             }
             gameObject.SetActive(false);
