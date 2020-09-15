@@ -12,21 +12,25 @@ public class GameManager : MonoBehaviour
     public GameObject ball, leftRocket, rightRocket, leftGoal, rightGoal;
 
     public int player1_currentScore = 0, player2_currentScore = 0;
-    public Text scoreText_1, scoreText_2;
+    public Text scoreText_1, scoreText_2, ballSpeedText;
+
+    private BallMovement ballMovement;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-
+        ballMovement = BallMovement.instance;
         scoreText_1.text = "Score: 0";
 
         scoreText_2.text = "Score: 0";
+
+        ballSpeedText.text = "Ball speed: " + ballMovement.getBallSpeed();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        ballSpeedText.text = "Ball speed: " + ballMovement.getBallSpeed();
     }
 
     public void Goal_Player1()

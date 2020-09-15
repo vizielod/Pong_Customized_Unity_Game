@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RacketManager : MonoBehaviour
+public class RacketLeftManager : MonoBehaviour
 {
-    public static RacketManager instance;
+    public static RacketLeftManager instance;
 
     public float racketSizeY = 1.4f;
     public float racketSpeed = 30f;
