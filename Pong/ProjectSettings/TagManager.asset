@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - RacketLeft
+  - RacketRight
+  - Ball
+  - Wall
+  - LeftGoal
+  - RightGoal
+  - GameManager
   layers:
   - Default
   - TransparentFX
