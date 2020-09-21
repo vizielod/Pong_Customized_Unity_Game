@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5072629028264168739}
   m_Layer: 0
   m_Name: RacketSpeedUp
-  m_TagString: Ball
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,4 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7576d3a4aef4c641851c396106bf5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boostAudio: {fileID: 0}
+  nerfAudio: {fileID: 0}
   speed: 15
+  hasStarted: 0

@@ -16,7 +16,7 @@ public class RacketRightManager : MonoBehaviour
     public float speedTimer;
 
     // Start is called before the first frame update
-    public Rigidbody2D racket;
+    //public Rigidbody2D racket;
     void Start()
     {
         instance = this;
@@ -32,7 +32,7 @@ public class RacketRightManager : MonoBehaviour
         sizeTimer -= Time.deltaTime;
         speedTimer -= Time.deltaTime;
         //transform.localScale = new Vector3(transform.localScale.x, racketSizeY, transform.localScale.z);
-        Debug.Log("Timer: " + sizeTimer);
+        //Debug.Log("Timer: " + sizeTimer);
         if (sizeTimer < 0)
         {
             racketSizeY = defaultRacketSizeY;

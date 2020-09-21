@@ -20,13 +20,14 @@ public class GameManager : MonoBehaviour
     public BoostSpawner boostSpawner;
     public RacketRightManager racketRightManager;
     public RacketLeftManager racketLeftManager;
-    public BoostManager boostManager;
+    //public BoostManager boostManager;
 
     private BallMovement ballMovement;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        startPlaying = true;
         ballMovement = BallMovement.instance;
 
         gameMusicAudio.Play();
@@ -48,10 +49,15 @@ public class GameManager : MonoBehaviour
             Destroy(ball);
             StartCoroutine(Quit());
         }
+        if (!GameObject.Find("Ball") && !GameObject.Find("Ball(Clone)") && startPlaying)
+        {           
+            GameObject ball = Instantiate((GameObject)Resources.Load("Prefabs/Ball", typeof(GameObject)), Vector3.zero, Quaternion.identity);
+        }
     }
 
     private IEnumerator Quit()
     {
+        startPlaying = false;
         yield return new WaitForSecondsRealtime(3f);
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -59,6 +65,8 @@ public class GameManager : MonoBehaviour
         Application.Quit();
         #endif
     }
+
+    
 
     public void Goal_Player1()
     {

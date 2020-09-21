@@ -22,16 +22,30 @@ public class MoveRacket : MonoBehaviour
         }
         
     }
+
+    private void Update()
+    {
+        /*if (gameObject.name == "RacketLeft")
+        {
+            racketLeftManager = RacketLeftManager.instance;
+        }
+        else if (gameObject.name == "RacketRight")
+        {
+            racketRightManager = RacketRightManager.instance;
+        }*/
+    }
     private void FixedUpdate()
     {
         if(gameObject.name == "RacketLeft")
         {
+            racketLeftManager = RacketLeftManager.instance;
             speed = racketLeftManager.getRacketSpeed();
             float v = Input.GetAxisRaw(axis);
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, v) * speed;
         }
         else if (gameObject.name == "RacketRight")
         {
+            racketRightManager = RacketRightManager.instance;
             speed = racketRightManager.getRacketSpeed();
             float v = Input.GetAxisRaw(axis);
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, v) * speed;

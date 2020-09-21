@@ -772,7 +772,6 @@ MonoBehaviour:
   defaultRacketSpeed: 30
   sizeTimer: 0
   speedTimer: 0
-  racket: {fileID: 139976884}
 --- !u!1 &165580659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,6 +1116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 359136226}
   - component: {fileID: 359136225}
+  - component: {fileID: 359136227}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1149,9 +1149,8 @@ MonoBehaviour:
   scoreText_2: {fileID: 335077897}
   ballSpeedText: {fileID: 1615208660}
   boostSpawner: {fileID: 1286096601}
-  racketRightManager: {fileID: 0}
-  racketLeftManager: {fileID: 0}
-  boostManager: {fileID: 0}
+  racketRightManager: {fileID: 139976888}
+  racketLeftManager: {fileID: 759869192}
 --- !u!4 &359136226
 Transform:
   m_ObjectHideFlags: 0
@@ -1166,6 +1165,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &359136227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359136224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e288d7ffc184dc448651a3fa5899b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.08
 --- !u!1001 &372732968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2116,7 +2128,6 @@ MonoBehaviour:
   defaultRacketSpeed: 30
   sizeTimer: 0
   speedTimer: 0
-  racket: {fileID: 759869188}
 --- !u!1 &772841797
 GameObject:
   m_ObjectHideFlags: 0

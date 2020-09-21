@@ -11,6 +11,7 @@ TagManager:
   - LeftGoal
   - RightGoal
   - GameManager
+  - Boost
   layers:
   - Default
   - TransparentFX

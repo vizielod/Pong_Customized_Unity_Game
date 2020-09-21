@@ -10,9 +10,10 @@ public class BallMovement : MonoBehaviour
     private AudioSource goalEffect;
 
     private CameraShake cameraShake;
+    private Freezer freezer;
     private GameObject cameraShakeObject;
 
-    public float speed = 15f;
+    public float speed = 20f;
 
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
@@ -28,6 +29,7 @@ public class BallMovement : MonoBehaviour
         cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         pongEffect = GameObject.Find("Audio Source Pong").GetComponent<AudioSource>();
         goalEffect = GameObject.Find("Audio Source Goal").GetComponent<AudioSource>();
+        freezer = GameObject.Find("GameManager").GetComponent<Freezer>();
 
         ball = GetComponent<Rigidbody2D>();
         //initial velocity
@@ -46,6 +48,10 @@ public class BallMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(gameObject.transform.position.y > 15.5f || gameObject.transform.position.y < -15.5f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -59,6 +65,7 @@ public class BallMovement : MonoBehaviour
         // Hit the left Racket?
         if (col.gameObject.name == "RacketLeft")
         {
+            freezer.Freeze();
             //Gradually increasing the speed of the ball by each Player hit
             setBallSpeed(speed + 2f);
 
@@ -88,6 +95,7 @@ public class BallMovement : MonoBehaviour
         // Hit the right Racket?
         if (col.gameObject.name == "RacketRight")
         {
+            freezer.Freeze();
             //Gradually increasing the speed of the ball by each Player hit
             setBallSpeed(speed + 2f);
 
